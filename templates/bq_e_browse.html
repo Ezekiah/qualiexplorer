@@ -1,0 +1,99 @@
+<!-- =========================== BROWSE ENQUETES LIST -->
+
+{% extends "bq_base.html" %}
+
+{% load i18n %}
+{% load tags %}
+
+{% block bodyid %}
+<body id="e">
+{% endblock %}
+
+{% block head %}
+
+	<script type="text/javascript" src="{{ MEDIA_URL }}/jquery/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}/js/utilScripts.js"></script>
+	
+{% endblock %}
+
+{% block leftmenu %}
+	<!--<div id="leftmenucontent">
+		<div class="leftmenublock">
+			{% comment %}Translators: back to home when looking at studies list{% endcomment %}
+			<a href="{% url reanalyseapp.views.home %}">< {% trans 'Back' %}</a>
+		</div>
+	</div>-->
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================================= -->
+
+<!-- remove enquete button + action -->
+<script type="text/javascript">
+	var clicToRemoveEnquete = function(eid,url) {
+		{% comment %}Translators: popup question when clicking delete study{% endcomment %}
+		var message = "{% trans 'You are about to delete this study.\nAre you sure you want to do this ?' %}"
+		var r = confirm(message);
+		if(r==true) {
+			doGetAtUrl(url,function(){location.reload(true);});
+			// we don't remove element anymore, because we want to know precisely when deletion is finished
+			//$("#e_"+eid).remove();
+		} else {
+			// ok, 'atta boy.
+		}
+	};
+</script>
+
+{% if enquetes %}
+	<ul id="eList">
+	{% for e in enquetes %}
+		<li id="e_{{e.id}}">
+			<div class="eBrowseEnquete eStatus_{{e.status}}" onclick='window.location.href="{% url reanalyseapp.views.eShow e.id %}"'>
+			
+				{% if perms.reanalyseapp.is_admin %}
+					<span class="eBrowseEnqueteStatus">	
+					{{e.date}} - [{{ e.get_status_display }}{% if e.status == '1' %} <span class="eProblem">{{e.statuscomplete}}%</span>{% endif %}]
+
+					<!-- dev - if enquete loading, we may want to disable 'delete'... ! -->
+					{% if e.status != '1' %}{% endif %}
+					<!-- we are on dev, allow deleting anyway... -->
+					<a href="#" onclick='clicToRemoveEnquete({{e.id}},"{% url reanalyseapp.views.eDelete e.id %}");event.stopPropagation();return false;'>delete</a>
+					
+					</span>
+				{% endif %}
+				
+				<h1>{% if perms.reanalyseapp.can_make %}[{{e.id}}] {% endif %}{{e.name}}</h1>
+				<div class="eBrowseEnqueteMetaContainer">
+					<div class="eBrowseEnqueteMeta">
+						<span class="eMetaList">{{e|enqueteMeta:'actor/authenty'}}</span> |
+						<span class="eMetaList">{{e|enqueteMeta:'actor/affiliation'}}</span> |
+						<span class="eMetaList">{{e|enqueteMeta:'general/nation'}}</span> |
+						<span class="eMetaList">{{e|enqueteMeta:'universe/studydates'}}</span> |
+						<span class="eMetaList">{{e|enqueteMeta:'edition/locarch'}}</span>
+					</div>
+					<div class="eBrowseEnqueteContentStats">
+						<span class="eMetaDoc">{{e|docPublicCount}}DOC</span>
+						<span class="eMetaSpk">{{e|spkPublicCount}}SPK</span>
+						<span class="eMetaViz">{{e|vizPublicCount}}{% if perms.reanalyseapp.can_make %}/{{e|vizTotalCount}}{% endif %}VIZ</span>
+					</div>
+				</div>
+				
+				<div class="eBrowseEnqueteDescription">{% autoescape off %}{{ e|enqueteMeta:'general/abstract'}}{% endautoescape %}</div>
+				<div>{% if request.user|canExploreEnquete:e.id %}Vous avez accès à l'intégralité de cette enquête{% endif %}</div>
+			</div>
+		</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>{% trans "There isn't any study in this site. Please come back later." %}</p>
+{% endif %}
+<! ================================================= -->
+
+{% endblock %}
+
+
+
+{% block bottom %}
+
+{% endblock %}

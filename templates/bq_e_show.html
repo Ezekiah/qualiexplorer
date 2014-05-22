@@ -1,0 +1,73 @@
+<!-- =========================== OVERVIEW PAGE -->
+
+{% extends "bq_e_base.html" %}
+
+{% load tags %}
+{% load ssi from future %}
+
+
+{% block enqueteheadmore %}
+{% endblock %}
+
+
+{% block enqueteleftmenumore %}
+{% endblock %}
+
+{% block content %}
+
+	<!-- ============================================================================= -->
+	<!--<div>- here a viz showing all documents, sortable by date, type, ...</div>-->
+	
+	<!-- ============================================================================= -->
+	<div class="enqueteMetaShowTableContainer">
+		<!--<a class="enqueteMetaShowTableToggle" href="#" onclick='$("#enqueteMetaShow").toggle("fast"); return false;'>afficher/masquer le détail</a>-->
+		<div id="enqueteMetaShow" style="display:visible;">
+			{% if metas %}
+				<table class="enqueteMetaShowTable">
+				{% for metacat in metas %}
+					{% for meta in metacat.values %}
+					<tr class="{% cycle 'odd' 'even' %} {% if forloop.counter = 1 %}newcat{% endif %}">
+						<td class="enqueteMetaShowTableKeyCat">{% if forloop.counter = 1 %}{{metacat.label}}{% endif %}</td>
+						<td class="enqueteMetaShowTableKeyField">{{meta.label}}</td>
+						<td class="enqueteMetaShowTableKeyVal">{{meta.values}}</td>
+					</tr>
+					{% endfor %}
+				{% endfor %}
+				</table>
+			{% else %}
+				Absolutely no meta in this study.
+			{% endif %}
+		</div>
+	</div>
+	<!-- ============================================================================= -->
+	<div class="contentHtml">	
+		<h1>Description</h1>
+		<!-- already html styled ! -->
+		{% autoescape off %}{{contenthtml}}{% endautoescape %}
+		<h1>Publications</h1>
+		<ul>
+		{% for p in publications %}
+			<li>{% autoescape off %}{{p}}{% endautoescape %}</li>
+		{% endfor %}
+		</ul>
+	</div>
+	<!-- ============================================================================= -->
+		
+{% endblock %}
+
+
+
+
+
+{% block enquetebottommore %}
+
+<!-- ======================================================= -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+	});
+</script>
+<!-- ======================================================= -->
+
+{% endblock %}
+

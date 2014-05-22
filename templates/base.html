@@ -1,0 +1,71 @@
+{% extends "boilerplate.html" %}
+{% comment %}
+	base present the basic header / footer structure.
+	Includes jquery and jquery message plugin on the head section.
+	Provide the base grid according to adapt.960 standard.
+{% endcomment %}
+
+
+{% block theme %}
+	<link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}css/themes/quali.less"><!-- main style less theme -->
+	<link rel='stylesheet' type="text/css" href="{{MEDIA_URL}}css/reanalyse.css"/>
+{% endblock %}
+
+{% block head %}
+	<title>hci, {% block title %}overview{% endblock %} | dime-shs</title>
+	
+{% endblock %}
+
+{% block dimeshs %}
+<a href="//sciencespo.fr/dime-shs" title="dimi shs - quali" id="dimi-shs-quali"></a> 
+{% endblock %}
+{% block body %}
+	<div class="container_12">
+		<header>
+			<div class="grid_12" id="section-line"><div id="section-line-inner"></div></div><!-- the straight line -->
+		
+			<div class="grid_12" id="header-inner"><!-- top menu structure -->
+				<div id="logo-outer" class="grid_3 outer outer_gain_1">
+					<a href="{% block logolink  %}#{% endblock %}" title="{% block logotitle  %}beQuali home{% endblock %}"><div id="logo"></div></a><!-- the logo -->
+				</div> 
+				<div id="menu-pages-outer" class="grid_6 outer outer_gain_1"><!-- the page menu -->
+					<div id="menu-pages" class="inner">{% block menupages %}beq studies{% endblock %}</div>
+				</div>
+				<div id="menu-settings-outer" class="grid_3 outer outer_gain_2"><!-- the page menu -->
+					<div id="menu-settings" class="inner">{% block settings %}settings{% endblock %}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</header>
+        
+		<section>
+			<div id="view" class="grid_12">
+				<div id="sidebar-outer" class="grid_3 outer">
+					<div id="sidebar"><div id="logomoto">{% block logomoto %}a stunning phrase{% endblock %}</div>{% block sidebar %}sidebar{% endblock %}</div>
+				</div>
+				<div id="page-outer" class="grid_9 outer">
+					<div id="page" class="inner">{% block pagecontent %}pagecontent{% endblock %}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</section>
+		
+		<footer>
+			<div class="grid_12">
+				<div id="footer-outer" class="">
+					<div id="footer">
+						<div id="footer-border"></div><!-- draw footer left border -->
+						<div id="footer-inner">
+							<div id="sciencespo-logo" class="floating"></div>
+							<div id="dimishs-logo" class="floating"></div>
+						</div>
+						
+					</div><!-- the logo -->
+				</div>
+			</div>
+		</footer>
+	</div>
+{% endblock %}
+
+
+
